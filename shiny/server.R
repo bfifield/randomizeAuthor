@@ -1,6 +1,5 @@
 library(shiny)
 library(httr)
-## library(mailR)
 
 ## To get random seed from random.org API
 get.seed <- function(){
@@ -24,12 +23,10 @@ draw.order <- function(names, seed, seed.source){
 
 ## ## To send email to recipients
 ## send.mail <- function(recipients, text){
-
-    
-    
-
+              
 ## }
 
+## Call to shinyServer
 shinyServer(
     function(input, output) {
 

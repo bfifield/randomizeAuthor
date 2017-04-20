@@ -1,7 +1,8 @@
 library(shiny)
 library(httr)
-library(mailR)
+## library(mailR)
 
+## To get random seed from random.org API
 get.seed <- function(){
    
     ## Get info from random.org api
@@ -14,12 +15,14 @@ get.seed <- function(){
 
 }
 
+## To randomize the author order conditional on the random seed
 draw.order <- function(names, seed, seed.source){
     set.seed(seed)
     draw.names <- names[sample(1:length(names), length(names))]
     return(list(author.order = draw.names, orig.order = names, seed = seed, seed.source = seed.source))
 }
 
+## ## To send email to recipients
 ## send.mail <- function(recipients, text){
 
     
@@ -61,20 +64,21 @@ shinyServer(
             
             ## Parse email addresses of recipients
             in.emails <- input$emails
+
+            ## Validate that emails are provided
             validate(
-                need(grepl("; ", in.emails), "Email addresses must be split by '; '.")
+                need(in.emails != "", "Please provide a recipient email for randomizeAuthor results.")
             )
 
-            ## Split 
-            split.out <- strsplit(in.emails, "; ")[[1]]
-
-            ## Test length
-            validate(
-                need(length(split.out) > 1, "Must provide at least two recipient email addresses.")
-            )
+            ## Split
+            if(grepl("; ", in.emails)){
+                out <- strsplit(in.emails, "; ")[[1]]
+            }else{
+                out <- in.emails
+            }
 
             ## Return
-            split.out
+            out        
 
         })
 
@@ -93,6 +97,7 @@ shinyServer(
             str3 <- paste("<strong>Random seed is:</strong>", ra.out$seed)
             str4 <- paste("<strong>Random seed source is:</strong>", ra.out$seed.source)
             str5 <- paste("<strong>Emailing results to:</strong>", paste(em.out, collapse = ", "))
+            
             message.out <- paste(str1, str2, str3, str4, str5, sep = "<br/>")
             HTML(message.out)
 

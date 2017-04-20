@@ -30,7 +30,7 @@ shinyUI(fluidPage(
         mainPanel(
             h2("Welcome to randomizeAuthor!", align = "center"),
             h3("Instructions:"),
-            HTML("<ul><li>Input email addresses of at minimum two recipients under <strong>Author Emails</strong>. Separate each email with a semicolon and a space. For example, <em>authorA@univ.edu; authorB@coll.edu</em>.</li><li>Input author names in blank fields under <strong>Author Names</strong>.</li><li>Hit <strong>Randomize</strong>, which will return the randomized author ordering and the random seed to replicate the results. Results will be emailed to the provided email addresses.</li><li>To replicate results, input author names in the same order, input the random seed in <strong>Random Seed</strong>, and hit the <strong>Randomize</strong> button.</li></ul>"),
+            HTML("<ul><li>Input email addresses of at minimum two recipients under <strong>Recipient Emails</strong>. Separate each email with a semicolon and a space. For example, <em>authorA@univ.edu; authorB@coll.edu</em>.</li><li>Input author names in blank fields under <strong>Author Names</strong>.</li><li>Hit <strong>Randomize</strong>, which will return the randomized author ordering and the random seed to replicate the results. Results will be emailed to the provided email addresses.</li><li>To replicate results, input author names in the same order, input the random seed in <strong>Random Seed</strong>, and hit the <strong>Randomize</strong> button.</li></ul>"),
 
             p(),
             h3("Results of Author Randomization:"),

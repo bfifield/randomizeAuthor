@@ -1,5 +1,6 @@
 library(shiny)
 library(httr)
+library(gmailr)
 
 ## To get random seed from random.org API
 get.seed <- function(){
@@ -21,20 +22,32 @@ draw.order <- function(names, seed, seed.source){
     return(list(author.order = draw.names, orig.order = names, seed = seed, seed.source = seed.source))
 }
 
-## ## To send email to recipients
-## send.mail <- function(recipients, text){
-              
-## }
+## To send email to recipients
+send.mail <- function(recipients, text){
+    recipients <- c(recipients, "randomizeauthor@gmail.com")
+    sender <- "randomizeauthor@gmail.com"
+    subject <- "Results of Author Randomization"
+    msg <- text
+    msg.send <- mime() %>%
+        to(recipients) %>%
+        from("randomizeauthor@gmail.com") %>%
+        subject(paste("Results of Author Randomization -", Sys.time())) %>%
+        html_body(msg)
+    send_message(msg.send)
+}
 
 ## Call to shinyServer
 shinyServer(
     function(input, output) {
 
-        ## ----------------------
-        ## Randomize author order
-        ## ----------------------
-        randomize.authors <- eventReactive(input$go, {
+        ## -------------------
+        ## Parse author emails
+        ## -------------------
+        author.emails <- eventReactive(input$go, {
 
+            ## ----------------------
+            ## Randomize author order
+            ## ----------------------
             ## Clean input names
             in.author <- c(input$name1, input$name2, input$name3, input$name4,
                            input$name5, input$name6, input$name7, input$name8)
@@ -50,16 +63,11 @@ shinyServer(
             }
 
             ## Randomize
-            draw.order(in.author, seed, seed.source)
-            
-        })
+            d.order <- draw.order(in.author, seed, seed.source)
 
-        ## -------------------
-        ## Parse author emails
-        ## -------------------
-        author.emails <- eventReactive(input$go, {
-            
-            ## Parse email addresses of recipients
+            ## -------------------
+            ## Parse author emails
+            ## -------------------
             in.emails <- input$emails
 
             ## Validate that emails are provided
@@ -68,14 +76,32 @@ shinyServer(
             )
 
             ## Split
-            if(grepl("; ", in.emails)){
-                out <- strsplit(in.emails, "; ")[[1]]
+            if(grepl(";", in.emails)){
+                out <- strsplit(in.emails, ";")[[1]]
+            }else if(grepl(",", in.emails)){
+                out <- strsplit(in.emails, ",")[[1]]
             }else{
                 out <- in.emails
             }
 
+            ## -----------------
+            ## Construct message
+            ## -----------------
+            str1 <- paste("<strong>Input author order is:</strong>", paste(d.order$orig.order, collapse = ", "))
+            str2 <- paste("<strong>Randomized author order is:</strong> ", paste(d.order$author.order, collapse = ", "))
+            str3 <- paste("<strong>Random seed is:</strong>", d.order$seed)
+            str4 <- paste("<strong>Random seed source is:</strong>", d.order$seed.source)
+            str5 <- paste("<strong>Emailing results to:</strong>", paste(out, collapse = ", "))
+            
+            message.out <- paste(str1, str2, str3, str4, str5, sep = "<br/>")
+
+            ## -----------
+            ## Send emails
+            ## -----------
+            send.mail(out, message.out)
+            
             ## Return
-            out        
+            message.out
 
         })
 
@@ -84,24 +110,11 @@ shinyServer(
         ## -------------
         output$text1 <- renderText({
             
-            ## Get emails
-            em.out <- author.emails()
-            
             ## Randomize and output to app
-            ra.out <- randomize.authors()
-            str1 <- paste("<strong>Input author order is:</strong>", paste(ra.out$orig.order, collapse = ", "))
-            str2 <- paste("<strong>Randomized author order is:</strong> ", paste(ra.out$author.order, collapse = ", "))
-            str3 <- paste("<strong>Random seed is:</strong>", ra.out$seed)
-            str4 <- paste("<strong>Random seed source is:</strong>", ra.out$seed.source)
-            str5 <- paste("<strong>Emailing results to:</strong>", paste(em.out, collapse = ", "))
-            
-            message.out <- paste(str1, str2, str3, str4, str5, sep = "<br/>")
-            HTML(message.out)
-
-            ## ## Email results
-            ## send.mail(em.out, message.out)
+            ra.out <- author.emails()
+            HTML(ra.out)
   
         })
-
+        
     }
 )

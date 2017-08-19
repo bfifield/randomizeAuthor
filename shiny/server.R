@@ -36,6 +36,11 @@ send.mail <- function(recipients, text){
     send_message(msg.send)
 }
 
+## To validate emails
+isValidEmail <- function(x) {
+    grepl("\\<[A-Z0-9._%+-]+@[A-Z0-9.-]+\\.[A-Z]{2,}\\>", as.character(x), ignore.case=TRUE)
+}
+
 ## Call to shinyServer
 shinyServer(
     function(input, output) {
@@ -82,6 +87,13 @@ shinyServer(
                 out <- strsplit(in.emails, ",")[[1]]
             }else{
                 out <- in.emails
+            }
+
+            ## Validate
+            for(i in 1:length(out)){
+                validate(
+                    need(isValidEmail(out[i]), paste(out[i], "is an invalid email address. Please fix or remove before using randomizeAuthor."))
+                )
             }
 
             ## -----------------

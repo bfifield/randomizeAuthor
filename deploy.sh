@@ -1,7 +1,13 @@
 #!/bin/bash
 
 # Authorize email address
-Rscript authorize_email.R
+echo "Reauthorize email?"
+select yn in "Yes" "No"; do
+    case $yn in
+	"Yes" ) Rscript authorize_email.R; break;;
+	"No" ) break;;
+    esac
+done
 
 # Test or deploy
 echo "Test or deploy randomizeAuthor?"

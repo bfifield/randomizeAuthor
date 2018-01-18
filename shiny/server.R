@@ -33,7 +33,7 @@ send.mail <- function(recipients, text){
         from("randomizeauthor@gmail.com") %>%
         subject(paste("Results of Author Randomization -", Sys.time())) %>%
         html_body(msg)
-    ## send_message(msg.send)
+    send_message(msg.send)
 }
 
 ## To validate emails

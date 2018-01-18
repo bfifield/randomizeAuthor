@@ -2,7 +2,8 @@ name: shiny
 title:
 account: randomizeauthor
 server: shinyapps.io
+hostUrl: https://api.shinyapps.io/v1
 appId: 173602
-bundleId: 947088
+bundleId: 1180874
 url: https://randomizeauthor.shinyapps.io/shiny/
-when: 1503202530.86684
+when: 1516246754.61235

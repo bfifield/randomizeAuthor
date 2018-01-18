@@ -1,5 +1,11 @@
 #!/bin/bash
 
+echo "# ---------------------------- #"
+echo "  Redeploying randomizeAuthor"
+echo "  $(date)"
+echo "# ---------------------------- #"
+echo -e "\n"
+
 # Authorize email address
 echo "Reauthorize email?"
 select yn in "Yes" "No"; do

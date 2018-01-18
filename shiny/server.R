@@ -25,8 +25,6 @@ draw.order <- function(names, seed, seed.source){
 ## To send email to recipients
 send.mail <- function(recipients, text){
     recipients <- c(recipients, "randomizeauthor@gmail.com")
-    sender <- "randomizeauthor@gmail.com"
-    subject <- "Results of Author Randomization"
     msg <- text
     msg.send <- mime() %>%
         to(recipients) %>%

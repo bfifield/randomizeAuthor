@@ -4,6 +4,6 @@ account: randomizeauthor
 server: shinyapps.io
 hostUrl: https://api.shinyapps.io/v1
 appId: 173602
-bundleId: 1180874
+bundleId: 1180900
 url: https://randomizeauthor.shinyapps.io/shiny/
-when: 1516246754.61235
+when: 1516248615.29304

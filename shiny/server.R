@@ -33,7 +33,7 @@ send.mail <- function(recipients, text){
         from("randomizeauthor@gmail.com") %>%
         subject(paste("Results of Author Randomization -", Sys.time())) %>%
         html_body(msg)
-    send_message(msg.send)
+    ## send_message(msg.send)
 }
 
 ## To validate emails
@@ -57,6 +57,10 @@ shinyServer(
             in.author <- c(input$name1, input$name2, input$name3, input$name4,
                            input$name5, input$name6, input$name7, input$name8)
             in.author <- in.author[in.author != ""]
+
+            validate(
+                need(length(in.author) > 1, "Please provide at least two author names to randomize.")
+            )
 
             ## Get random seed
             if(input$seed == ""){

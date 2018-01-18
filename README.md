@@ -3,7 +3,7 @@
 Welcome to
 [randomizeAuthor](https://randomizeauthor.shinyapps.io/shiny/)!
 randomizeAuthor is a free Shiny app utility for randomizing author
-order while creating a shared and replicable record of the randomized
+order in academic papers while creating a shared and replicable record of the randomized
 results.
 
 Please try it out and submit bug reports if you come across any

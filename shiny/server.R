@@ -1,5 +1,6 @@
 library(shiny)
 source("helpers.R")
+options(shiny.sanitize.errors = TRUE)
 
 ## Call to shinyServer
 shinyServer(
@@ -24,7 +25,7 @@ shinyServer(
 
             ## Get random seed
             if(input$seed == ""){
-                seed <- get.seed()$seed
+                seed <- get_seed()$seed
                 seed.source <- "random.org"
             }else{
                 seed <- input$seed
@@ -32,7 +33,7 @@ shinyServer(
             }
 
             ## Randomize
-            d.order <- draw.order(in.author, seed, seed.source)
+            d.order <- draw_order(in.author, seed, seed.source)
 
             ## -------------------
             ## Parse author emails
@@ -56,7 +57,7 @@ shinyServer(
             ## Validate
             for(i in 1:length(out)){
                 validate(
-                    need(isValidEmail(out[i]), paste(out[i], "is an invalid email address. Please fix or remove before using randomizeAuthor."))
+                    need(is_valid_email(out[i]), paste(out[i], "is an invalid email address. Please fix or remove before using randomizeAuthor."))
                 )
             }
 
@@ -74,7 +75,7 @@ shinyServer(
             ## -----------
             ## Send emails
             ## -----------
-            send.mail(out, message.out)
+            send_mail(out, message.out)
             
             ## Return
             message.out

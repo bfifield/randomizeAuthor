@@ -19,7 +19,11 @@ done
 echo "Commit changes to github?"
 select yn in "Yes" "No"; do
     case $yn in
-	"Yes" ) git add -A; git commit -m "up new deploy"; git push origin master; break;;
+	"Yes" ) git add -A
+		echo "Give commit message here:"
+		read commit
+		git commit -m "$commit"
+		git push origin master; break;;
 	"No" ) break;;
     esac
 done
